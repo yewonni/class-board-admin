@@ -1,0 +1,12 @@
+
+node_modules/
+
+
+/client/node_modules/
+/server/node_modules/
+
+# 환경 변수
+.env
+
+# 기타
+.vscode/
