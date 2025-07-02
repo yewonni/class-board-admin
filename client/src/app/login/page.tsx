@@ -1,10 +1,41 @@
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { login } from "@/api/auth/login";
+import { useAuthStore } from "@/store/useAuthStore";
+import { AxiosError } from "axios";
 export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setError(false);
+      const response = await login(email, password);
+      const accessToken = response.data.accessToken;
+      setAccessToken(accessToken);
+      router.push("/dashboard");
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      setError(true);
+
+      const message =
+        error.response?.data?.message || "로그인 중 문제가 발생했습니다.";
+      setErrorMessage(message);
+    }
+  };
+
   return (
     <main className="w-96   max-h-96 border border-[#A78B71] rounded-lg absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white shadow-md">
       <h1 className="text-center text-2xl font-semibold mb-4 text-[#475569]">
         Admin Login
       </h1>
-      <form className="flex flex-col gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <label htmlFor="email" className="text-sm font-semibold">
           이메일
         </label>
@@ -12,7 +43,10 @@ export default function LoginPage() {
           id="email"
           type="email"
           placeholder="이메일을 입력해주세요"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="w-full border px-3 py-2 rounded mb-3 focus:outline-none"
+          required
         />
 
         <label htmlFor="pw" className="text-sm font-semibold">
@@ -22,11 +56,12 @@ export default function LoginPage() {
           id="pw"
           type="password"
           placeholder="비밀번호를 입력해주세요"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className="w-full border px-3 py-2 mt-1 rounded focus:outline-none"
+          required
         />
-        {/* <p className="text-sm text-[#502222]">
-          아이디 또는 비밀번호를 확인해주세요.
-        </p> */}
+        {error && <p className="text-sm text-[#502222]">{errorMessage}</p>}
 
         <button
           type="submit"
