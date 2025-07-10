@@ -1,18 +1,4 @@
-interface Lecture {
-  id: number;
-  name: string;
-  startDate: string;
-  progress: string;
-}
-
-interface Student {
-  id: number;
-  name: string;
-  email: string;
-  joinDate: string;
-  status: string;
-  recentLectures: Lecture[];
-}
+import { Student } from "@/types/students/students";
 
 interface StudentsTableProps {
   data: Student[];
@@ -34,7 +20,7 @@ export default function StudentsTable({
         </tr>
       </thead>
       <tbody className="text-gray-700">
-        {data.map((student) => (
+        {data?.map((student) => (
           <tr
             key={student.id}
             onClick={() => onRowClick(student)}
@@ -42,16 +28,19 @@ export default function StudentsTable({
           >
             <td className="py-2 px-4 text-center">{student.name}</td>
             <td className="py-2 px-4 text-center truncate">{student.email}</td>
-            <td className="py-2 px-4 text-center">{student.joinDate}</td>
+            <td className="py-2 px-4 text-center">
+              {" "}
+              {student.joinDate.split("T")[0]}
+            </td>
             <td className="py-2 px-4 text-center">
               <span
                 className={`inline-block px-2 py-1 text-xs rounded-full font-medium ${
-                  student.status === "활성화"
+                  student.isActive
                     ? "bg-green-100 text-green-800"
                     : "bg-gray-100 text-gray-700"
                 }`}
               >
-                {student.status}
+                {student.isActive ? "활성화" : "비활성화"}
               </span>
             </td>
           </tr>
