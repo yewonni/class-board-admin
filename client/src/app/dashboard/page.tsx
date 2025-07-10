@@ -1,14 +1,21 @@
 "use client";
+import { useAuthStore } from "@/store/useAuthStore";
 import SideBar from "@/components/SideBar";
 import Header from "@/components/Header";
 import { SIDEBAR_LABELS } from "@/constants/constants";
 import OverviewSection from "@/components/dashboard/OverviewSection";
 import NewStudentsByMonthSection from "@/components/dashboard/NewStudentsByMonthSection";
-import AttendanceRateByCourseSection from "@/components/dashboard/AttendanceRateByCourseSection";
+import ProgressionRateByCourseSection from "@/components/dashboard/ProgressionRateByCourseSection";
 import TopCoursesSection from "@/components/dashboard/TopCoursesSection";
 import RecentAlertsSection from "@/components/dashboard/RecentAlertsSection";
 
 export default function DashboardPage() {
+  const accessToken = useAuthStore((state) => state.accessToken);
+
+  if (!accessToken) {
+    return null;
+  }
+
   return (
     <div className="flex min-h-screen">
       <SideBar />
@@ -18,7 +25,7 @@ export default function DashboardPage() {
           <OverviewSection />
           <div className="flex gap-6">
             <NewStudentsByMonthSection />
-            <AttendanceRateByCourseSection />
+            <ProgressionRateByCourseSection />
           </div>
           <div className="flex gap-6">
             <TopCoursesSection />
