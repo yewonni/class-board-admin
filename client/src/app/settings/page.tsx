@@ -1,7 +1,14 @@
+"use client";
+import { useAuthStore } from "@/store/useAuthStore";
 import SideBar from "@/components/SideBar";
 import Header from "@/components/Header";
 import { SIDEBAR_LABELS } from "@/constants/constants";
 export default function SettingsPage() {
+  const accessToken = useAuthStore((state) => state.accessToken);
+
+  if (!accessToken) {
+    return null;
+  }
   return (
     <div className="flex min-h-screen">
       <SideBar />
