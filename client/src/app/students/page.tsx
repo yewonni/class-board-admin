@@ -1,216 +1,111 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuthStore } from "@/store/useAuthStore";
 import SideBar from "@/components/SideBar";
 import Header from "@/components/Header";
 import { SIDEBAR_LABELS } from "@/constants/constants";
-import SearchBar from "@/components/SearchBar";
+import { SearchBar } from "@/components/SearchBar";
 import StudentsTable from "@/components/students/StudentsTable";
 import SelectOption from "@/components/SelectOption";
 import { StudentInfoModal } from "@/components/students/StudentInfoModal";
+import { getStudents, getStudentById } from "@/api/students/students";
+import { Student } from "@/types/students/students";
+import { useDebounce } from "@/hooks/useDebounce";
+import Pagination from "@/components/Pagination";
+import { useLoadingStore } from "@/store/useLoadingStore";
 
 const studentOptions = ["전체", "활성화", "비활성화"];
 
-const studentsData = [
-  {
-    id: 1,
-    name: "김철수",
-    email: "example1@classboard.com",
-    joinDate: "2023-01-01",
-    status: "활성화",
-    recentLectures: [
-      { id: 1, name: "React 기초", startDate: "2024-06-01", progress: "90%" },
-      {
-        id: 2,
-        name: "Next.js 프로젝트",
-        startDate: "2024-05-15",
-        progress: "60%",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "홍길동",
-    email: "hong2@classboard.com",
-    joinDate: "2023-02-15",
-    status: "비활성화",
-    recentLectures: [
-      {
-        id: 1,
-        name: "JavaScript 고급",
-        startDate: "2024-03-01",
-        progress: "100%",
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "이영희",
-    email: "lee3@classboard.com",
-    joinDate: "2023-03-10",
-    status: "활성화",
-    recentLectures: [],
-  },
-  {
-    id: 4,
-    name: "박민수",
-    email: "park4@classboard.com",
-    joinDate: "2023-04-05",
-    status: "활성화",
-    recentLectures: [],
-  },
-  {
-    id: 5,
-    name: "최수진",
-    email: "choi5@classboard.com",
-    joinDate: "2023-05-20",
-    status: "비활성화",
-    recentLectures: [],
-  },
-  {
-    id: 6,
-    name: "정다은",
-    email: "jung6@classboard.com",
-    joinDate: "2023-06-12",
-    status: "활성화",
-    recentLectures: [],
-  },
-  {
-    id: 7,
-    name: "한지훈",
-    email: "han7@classboard.com",
-    joinDate: "2023-07-01",
-    status: "비활성화",
-    recentLectures: [],
-  },
-  {
-    id: 8,
-    name: "오민재",
-    email: "oh8@classboard.com",
-    joinDate: "2023-07-25",
-    status: "활성화",
-    recentLectures: [],
-  },
-  {
-    id: 9,
-    name: "김나연",
-    email: "kim9@classboard.com",
-    joinDate: "2023-08-15",
-    status: "비활성화",
-    recentLectures: [],
-  },
-  {
-    id: 10,
-    name: "서지훈",
-    email: "seo10@classboard.com",
-    joinDate: "2023-09-05",
-    status: "활성화",
-    recentLectures: [],
-  },
-  {
-    id: 11,
-    name: "이수현",
-    email: "lee11@classboard.com",
-    joinDate: "2023-09-20",
-    status: "활성화",
-    recentLectures: [],
-  },
-  {
-    id: 12,
-    name: "김민정",
-    email: "kim12@classboard.com",
-    joinDate: "2023-10-01",
-    status: "비활성화",
-    recentLectures: [],
-  },
-  {
-    id: 13,
-    name: "박지훈",
-    email: "park13@classboard.com",
-    joinDate: "2023-10-15",
-    status: "활성화",
-    recentLectures: [],
-  },
-  {
-    id: 14,
-    name: "최유리",
-    email: "choi14@classboard.com",
-    joinDate: "2023-11-05",
-    status: "비활성화",
-    recentLectures: [],
-  },
-  {
-    id: 15,
-    name: "정하늘",
-    email: "jung15@classboard.com",
-    joinDate: "2023-11-20",
-    status: "활성화",
-    recentLectures: [],
-  },
-  {
-    id: 16,
-    name: "한소희",
-    email: "han16@classboard.com",
-    joinDate: "2023-12-01",
-    status: "활성화",
-    recentLectures: [],
-  },
-  {
-    id: 17,
-    name: "오세훈",
-    email: "oh17@classboard.com",
-    joinDate: "2023-12-10",
-    status: "비활성화",
-    recentLectures: [],
-  },
-  {
-    id: 18,
-    name: "김지아",
-    email: "kim18@classboard.com",
-    joinDate: "2023-12-20",
-    status: "활성화",
-    recentLectures: [],
-  },
-  {
-    id: 19,
-    name: "서민재",
-    email: "seo19@classboard.com",
-    joinDate: "2024-01-05",
-    status: "비활성화",
-    recentLectures: [],
-  },
-  {
-    id: 20,
-    name: "이승현",
-    email: "lee20@classboard.com",
-    joinDate: "2024-01-15",
-    status: "활성화",
-    recentLectures: [],
-  },
-];
-
-interface Lecture {
-  id: number;
-  name: string;
-  startDate: string;
-  progress: string;
-}
-
-interface Student {
-  id: number;
-  name: string;
-  email: string;
-  joinDate: string;
-  status: string;
-  recentLectures: Lecture[];
-}
-
 export default function StudentsPage() {
   const [isStudentModalOpen, setStudentModalOpen] = useState(false);
+  const [studentsData, setStudentsData] = useState<Student[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [filterStatus, setFilterStatus] = useState<string>("전체");
+  const [error, setError] = useState(false);
+  const [studentModalError, setStudentModalError] = useState<string | null>(
+    null
+  );
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const isLoading = useLoadingStore((state) => state.isLoading);
+  const [hasChanges, setHasChanges] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const debouncedSearchKeyword = useDebounce(searchKeyword, 400);
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const limit = 20;
 
-  const handleStudentClick = (student: Student) => {
-    setSelectedStudent(student);
-    setStudentModalOpen(true);
+  useEffect(() => {
+    setPage(1);
+  }, [filterStatus, debouncedSearchKeyword]);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        setError(false);
+        const isActiveParam: boolean | undefined =
+          filterStatus === "활성화"
+            ? true
+            : filterStatus === "비활성화"
+            ? false
+            : undefined;
+
+        const response = await getStudents(
+          page,
+          limit,
+          isActiveParam,
+          debouncedSearchKeyword
+        );
+        setStudentsData(response.data.data);
+        setTotalCount(response.data.pagination?.totalCount ?? 0);
+      } catch (error) {
+        if (process.env.NODE_ENV === "development") {
+          console.error(error, "수강생 데이터 불러오기 실패");
+        }
+        setError(true);
+      }
+    };
+
+    fetchStudents();
+  }, [filterStatus, debouncedSearchKeyword, page]);
+
+  if (!accessToken) {
+    return null;
+  }
+
+  const handleUpdateStudent = (
+    updatedStudent: Partial<Student> & { id: number }
+  ) => {
+    setStudentsData((prev) =>
+      prev.map((stu) =>
+        stu.id === updatedStudent.id ? { ...stu, ...updatedStudent } : stu
+      )
+    );
+  };
+
+  const handleModalClose = () => {
+    if (hasChanges) {
+      const confirmLeave = window.confirm(
+        "저장하지 않은 변경사항이 있습니다. 정말 닫으시겠습니까?"
+      );
+      if (!confirmLeave) return;
+    }
+    setStudentModalOpen(false);
+    setSelectedStudent(null);
+    setHasChanges(false);
+  };
+
+  const handleStudentClick = async (student: Student) => {
+    try {
+      setStudentModalError(null);
+      const response = await getStudentById(student.id);
+      setSelectedStudent(response.data);
+      setStudentModalOpen(true);
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("수강생 상세조회 실패", error);
+      }
+      setStudentModalError("수강생 상세정보를 불러오는 데 실패했습니다.");
+    }
   };
 
   return (
@@ -221,21 +116,57 @@ export default function StudentsPage() {
           <Header>{SIDEBAR_LABELS.STUDENTS}</Header>
           <main className="p-6 bg-mainBg min-h-screen flex flex-col gap-6">
             <div className="flex gap-2">
-              <SearchBar placeholder="이름, 이메일 입력" />
-              <SelectOption options={studentOptions} defaultValue="전체" />
+              <SearchBar
+                placeholder="이름, 이메일 입력"
+                value={searchKeyword}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setSearchKeyword(e.target.value)
+                }
+              />
+
+              <SelectOption
+                options={studentOptions}
+                defaultValue="전체"
+                onChange={(selected) => setFilterStatus(selected)}
+              />
             </div>
-            <StudentsTable
-              data={studentsData}
-              onRowClick={handleStudentClick}
-            />
+            {!error && !isLoading && (
+              <StudentsTable
+                data={studentsData ?? []}
+                onRowClick={handleStudentClick}
+              />
+            )}
+
+            {studentModalError && (
+              <p className="text-error text-sm mt-2">{studentModalError}</p>
+            )}
+            {error && !isLoading && (
+              <p className="text-error text-sm mt-2">
+                수강생 목록을 불러오는 중 오류가 발생했습니다.
+              </p>
+            )}
+            {!isLoading && (
+              <Pagination
+                currentPage={page}
+                totalCount={totalCount}
+                limit={limit}
+                onPageChange={(newPage) => setPage(newPage)}
+              />
+            )}
           </main>
         </div>
       </div>
 
       <StudentInfoModal
         isOpen={isStudentModalOpen}
-        onClose={() => setStudentModalOpen(false)}
+        onClose={handleModalClose}
         student={selectedStudent}
+        onStudentUpdated={(updated) => {
+          handleUpdateStudent(updated);
+          setStudentModalOpen(false);
+          setHasChanges(false);
+        }}
+        onStatusChange={(changed) => setHasChanges(changed)}
       />
     </>
   );
