@@ -1,12 +1,4 @@
-interface Courses {
-  id: number;
-  title: string;
-  instructor: string;
-  studentCount: number;
-  openDate: string;
-  status: string;
-  progress: string;
-}
+import { Courses } from "@/types/courses/courses";
 
 interface CoursesTablePropsType {
   data: Courses[];
@@ -40,7 +32,9 @@ export default function CoursesTable({
             <td className="w-1/4 py-2 px-4 text-center">
               {lecture.studentCount}
             </td>
-            <td className="w-1/4 py-2 px-4 text-center">{lecture.openDate}</td>
+            <td className="w-1/4 py-2 px-4 text-center">
+              {lecture.openDate.split("T")[0]}
+            </td>
             <td className="w-1/4 py-2 px-4 text-center">
               <span
                 className={`inline-block px-2 py-1 text-xs rounded-full font-medium
