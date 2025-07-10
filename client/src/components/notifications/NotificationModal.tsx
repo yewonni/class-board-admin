@@ -79,7 +79,11 @@ export default function NotificationModal({
           {data.message}
         </p>
 
-        <div className="text-right text-xs text-gray-500">{data.date}</div>
+        <div className="text-right text-xs text-gray-500">
+          {`${data.date.split("T")[0]} ${
+            data.date.split("T")[1].split(".")[0]
+          }`}
+        </div>
       </div>
     </div>
   );
