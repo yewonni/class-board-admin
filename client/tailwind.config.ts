@@ -16,6 +16,7 @@ const config: Config = {
         sidebarBg: "#111827",
         mainBg: "#F4F4F6",
         accent: "#4B8C79",
+        error: "#EF4444 ",
       },
       backgroundImage: {
         "search-icon": "url('/images/search-icon.svg')",
