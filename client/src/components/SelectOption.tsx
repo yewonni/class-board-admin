@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 
-interface SelectboxProps {
+interface SelectOptionProps {
   options: string[];
-  onChange?: (selected: string) => void;
+  onChange: (selected: string) => void;
   defaultValue?: string;
 }
 
@@ -11,7 +11,7 @@ export default function SelectOption({
   options,
   onChange,
   defaultValue = options[0],
-}: SelectboxProps) {
+}: SelectOptionProps) {
   const [selected, setSelected] = useState(defaultValue);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
