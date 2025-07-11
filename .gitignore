@@ -10,3 +10,6 @@ node_modules/
 
 # 기타
 .vscode/
+
+dev.db
+*.db
