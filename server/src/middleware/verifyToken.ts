@@ -1,8 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
+
+export interface CustomRequest extends Request {
+  user?: string | JwtPayload;
+}
 
 export const verifyToken = (
-  req: Request,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -15,10 +19,10 @@ export const verifyToken = (
 
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!);
-    // @ts-ignore
-    req.user = decoded; // 필요시 type 정의 가능
+    req.user = decoded;
     next();
   } catch (err) {
+    console.error("Access token verification failed:", err);
     return res
       .status(401)
       .json({ message: "유효하지 않은 access token입니다." });
