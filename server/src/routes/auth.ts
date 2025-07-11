@@ -24,7 +24,7 @@ router.post("/login", async (req: Request, res: Response) => {
 
     const isValid = await bcrypt.compare(password, admin.password);
     if (!isValid) {
-      return res.status(401).json({ message: "비밀번호가 틀렸습니다." });
+      return res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
     }
 
     // 로그인 성공 시 토큰 생성
@@ -48,10 +48,10 @@ router.post("/login", async (req: Request, res: Response) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    return res.json({ message: "로그인 성공", accessToken });
+    return res.json({ message: "success", accessToken });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "서버 오류" });
+    return res.status(500).json({ message: "서버 오류가 발생했습니다." });
   }
 });
 
