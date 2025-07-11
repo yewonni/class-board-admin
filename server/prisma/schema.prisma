@@ -13,3 +13,55 @@ model Admin {
   password String
   createdAt DateTime @default(now())
 }
+
+model User {
+  id          Int           @id @default(autoincrement())
+  name        String
+  email       String        @unique
+  joinDate    DateTime
+  isActive    Boolean       @default(true)
+  enrollments Enrollment[]
+}
+
+model Lecture {
+  id          Int           @id @default(autoincrement())
+  title       String
+  instructor  String
+  openDate    DateTime
+  status      LectureStatus
+  enrollments Enrollment[]
+}
+
+model Enrollment {
+  id          Int       @id @default(autoincrement())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+
+  lecture     Lecture   @relation(fields: [lectureId], references: [id], onDelete: Cascade)
+  lectureId   Int
+
+  enrollDate  DateTime
+  progress    Int
+}
+
+
+enum LectureStatus {
+  예정
+  진행중
+  종료
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  category  Category
+  date      DateTime
+  isNew     Boolean  @default(true)
+}
+enum Category {
+  강의
+  공지
+  과제
+  기타
+}
