@@ -28,10 +28,9 @@ export default function SettingsPage() {
           <section className="bg-white rounded-2xl p-6 shadow-sm">
             <h3 className="text-lg text-gray-800 mb-1">예정된 기능</h3>
             <ul className="list-disc list-inside text-sm space-y-1">
-              <li>관리자 비밀번호 변경 기능 추가 예정</li>
-              <li>기본 UI 보기 모드 선택 기능 추가 예정</li>
-              <li>알림 표시 개선 및 간단한 알림 설정 예정</li>
-              <li>기타 사용자 편의 기능 순차적 추가 예정</li>
+              <li>관리자 비밀번호 변경 기능 추가</li>
+              <li> 웹소켓 기반 실시간 알림 시스템 확장</li>
+              <li>기타 사용자 편의 기능 순차적 추가</li>
             </ul>
           </section>
         </main>
