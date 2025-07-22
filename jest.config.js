@@ -14,11 +14,14 @@ module.exports = {
     },
     {
       displayName: "client",
+      preset: "ts-jest",
       testEnvironment: "jsdom",
       testMatch: ["<rootDir>/client/**/__tests__/**/*.test.ts?(x)"],
       rootDir: ".",
-      transform: {
-        "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
+      globals: {
+        "ts-jest": {
+          tsconfig: "client/tsconfig.json",
+        },
       },
     },
   ],
