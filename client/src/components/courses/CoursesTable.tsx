@@ -1,3 +1,4 @@
+import React from "react";
 import { Courses } from "@/types/courses/courses";
 
 interface CoursesTablePropsType {

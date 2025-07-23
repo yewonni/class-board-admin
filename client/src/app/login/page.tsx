@@ -1,8 +1,10 @@
 "use client";
+import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/api/auth/login";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useLoadingStore } from "@/store/useLoadingStore";
 import { AxiosError } from "axios";
 export default function LoginPage() {
   const router = useRouter();
@@ -10,6 +12,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const isLoading = useLoadingStore((state) => state.isLoading);
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,9 +68,14 @@ export default function LoginPage() {
 
         <button
           type="submit"
-          className="mt-3 bg-[#A78B71] text-white py-2 rounded hover:bg-opacity-90"
+          disabled={isLoading}
+          className={`mt-3 py-2 rounded text-white transition-colors ${
+            isLoading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-[#A78B71] hover:bg-opacity-90"
+          }`}
         >
-          로그인
+          {isLoading ? "로그인 중..." : "로그인"}
         </button>
       </form>
     </main>

@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { useEffect, useState } from "react";
 import {
   getNotifications,
@@ -38,6 +39,7 @@ export default function RecentAlertsSection() {
         if (process.env.NODE_ENV === "development") {
           console.log(error, "최근 알림 불러오기 실패");
         }
+
         setError(true);
       }
     };
@@ -56,6 +58,7 @@ export default function RecentAlertsSection() {
       if (process.env.NODE_ENV === "development") {
         console.log(error, "알림 확인 실패");
       }
+
       showToast("알림 확인에 실패했습니다. 다시 시도해주세요.");
     }
   };

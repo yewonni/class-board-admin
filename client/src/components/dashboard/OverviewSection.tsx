@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { useEffect, useState } from "react";
 import { getStudents } from "@/api/students/students";
 import { getLectures } from "@/api/courses/courses";
@@ -157,7 +158,7 @@ export default function OverviewSection() {
           <h3 className="mb-2 font-semibold">미확인 알림 수</h3>
           {notiError && !isLoading ? (
             <p className="text-error text-sm mt-2">
-              데이터를 불러오는 중 오류가 발생했습니다.
+              알림 수 데이터를 불러오는 데 실패했습니다.
             </p>
           ) : (
             <p className="text-2xl font-bold">{unreadNotiCount}건</p>

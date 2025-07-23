@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import * as echarts from "echarts";
 import { getCourseAverageProgress } from "@/api/dashboard/dashboard";
@@ -70,7 +71,12 @@ export default function ProgressionRateByCourseSection() {
           데이터를 불러오는 중 오류가 발생했습니다.
         </div>
       ) : (
-        <div ref={chartRef} className="w-full h-[220px] border rounded-sm" />
+        <div
+          ref={chartRef}
+          className="w-full h-[220px] border rounded-sm"
+          role="region"
+          aria-label="수강생 평균 진도율 차트"
+        />
       )}
     </section>
   );

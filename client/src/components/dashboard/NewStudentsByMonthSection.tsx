@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import * as echarts from "echarts";
 import { getMonthlyStudentStats } from "@/api/dashboard/dashboard";
@@ -73,7 +74,12 @@ export default function NewStudentsByMonthSection() {
           데이터를 불러오는 중 오류가 발생했습니다.
         </div>
       ) : (
-        <div ref={chartRef} className="w-full h-[220px] border rounded-sm" />
+        <div
+          ref={chartRef}
+          className="w-full h-[220px] border rounded-sm"
+          role="region"
+          aria-label="신규 수강생 차트"
+        />
       )}
     </section>
   );
