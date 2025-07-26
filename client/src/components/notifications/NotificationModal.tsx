@@ -63,6 +63,7 @@ export default function NotificationModal({
       >
         <button
           onClick={onClose}
+          aria-label="닫기"
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl"
         >
           &times;
