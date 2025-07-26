@@ -10,14 +10,10 @@ router.get(
   verifyToken,
   async (req: CustomRequest, res: Response) => {
     try {
-      const enrollments = await prisma.enrollment.findMany();
-
-      const totalProgress = enrollments.reduce((sum, e) => sum + e.progress, 0);
-      const avgProgress = enrollments.length
-        ? Math.round(totalProgress / enrollments.length)
-        : 0;
-
-      res.json({ averageProgress: avgProgress });
+      const result = await prisma.enrollment.aggregate({
+        _avg: { progress: true },
+      });
+      res.json({ averageProgress: Math.round(result._avg.progress ?? 0) });
     } catch (error) {
       console.error("전체 평균 진행율 조회 실패:", error);
       res.status(500).json({ message: "진행율 조회 중 오류가 발생했습니다." });
