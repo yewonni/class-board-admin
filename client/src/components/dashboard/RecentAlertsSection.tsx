@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import {
   getNotifications,
   markNotificationRead,
@@ -8,13 +9,17 @@ import {
 } from "@/api/notifications/notifications";
 import { showToast } from "@/utils/toast";
 import { useLoadingStore } from "@/store/useLoadingStore";
-import NotificationModal from "@/components/notifications/NotificationModal";
 import { useNotificationStore } from "@/store/useNotificationStore";
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
   return d.toLocaleDateString("ko-KR", { month: "2-digit", day: "2-digit" });
 }
+
+const NotificationModal = dynamic(
+  () => import("@/components/notifications/NotificationModal"),
+  { ssr: false }
+);
 
 export default function RecentAlertsSection() {
   const notifications = useNotificationStore((state) => state.notifications);
@@ -35,11 +40,7 @@ export default function RecentAlertsSection() {
         setError(false);
         const res = await getNotifications(1, 5);
         setNotifications(res.data.data);
-      } catch (error) {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error, "최근 알림 불러오기 실패");
-        }
-
+      } catch {
         setError(true);
       }
     };
@@ -54,11 +55,7 @@ export default function RecentAlertsSection() {
       }
       setSelectedNotification({ ...note, isNew: false });
       setIsModalOpen(true);
-    } catch (error) {
-      if (process.env.NODE_ENV === "development") {
-        console.log(error, "알림 확인 실패");
-      }
-
+    } catch {
       showToast("알림 확인에 실패했습니다. 다시 시도해주세요.");
     }
   };
