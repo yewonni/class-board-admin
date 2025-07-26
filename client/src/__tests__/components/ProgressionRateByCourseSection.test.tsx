@@ -1,65 +1,43 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import ProgressionRateByCourseSection from "@/components/dashboard/ProgressionRateByCourseSection";
-import { getCourseAverageProgress } from "@/api/dashboard/dashboard";
-import { createAxiosResponse } from "@/utils/test/mockAxiosResponse";
 
-jest.mock("@/api/dashboard/dashboard", () => ({
-  getCourseAverageProgress: jest.fn(),
-}));
-
-jest.mock("echarts", () => ({
-  init: jest.fn(() => ({
-    setOption: jest.fn(),
-    resize: jest.fn(),
-    dispose: jest.fn(),
-  })),
-}));
-
-const mockGetCourseAverageProgress =
-  getCourseAverageProgress as jest.MockedFunction<
-    typeof getCourseAverageProgress
-  >;
+jest.mock("next/dynamic", () => {
+  return () => {
+    return function MockProgressionRateChart() {
+      return (
+        <div data-testid="progression-rate-chart">Mock Chart Component</div>
+      );
+    };
+  };
+});
 
 describe("ProgressionRateByCourseSection", () => {
-  function renderComponent() {
-    return render(<ProgressionRateByCourseSection />);
-  }
+  it("섹션 제목과 설명이 올바르게 렌더링된다", () => {
+    render(<ProgressionRateByCourseSection />);
 
-  beforeEach(() => {
-    jest.clearAllMocks();
+    expect(screen.getByText("강의별 수강생 평균 진도율")).toBeInTheDocument();
+    expect(screen.getByText("단위: %")).toBeInTheDocument();
   });
 
-  it("API 호출 성공 시 그래프를 렌더링한다", async () => {
-    mockGetCourseAverageProgress.mockResolvedValue(
-      createAxiosResponse([
-        { lectureId: 1, lectureTitle: "강의A", avgProgress: 60 },
-        { lectureId: 2, lectureTitle: "강의B", avgProgress: 82 },
-      ])
-    );
+  it("차트 컴포넌트가 렌더링된다", () => {
+    render(<ProgressionRateByCourseSection />);
 
-    renderComponent();
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("heading", { name: "강의별 수강생 평균 진도율" })
-      ).toBeInTheDocument();
-      expect(screen.getByText("단위: %")).toBeInTheDocument();
-    });
-
-    const chartDiv = screen.getByRole("region");
-    expect(chartDiv).toBeInTheDocument();
+    expect(screen.getByTestId("progression-rate-chart")).toBeInTheDocument();
   });
 
-  it("API 호출 실패 시 에러 메시지를 보여준다", async () => {
-    mockGetCourseAverageProgress.mockRejectedValue(new Error("fail"));
+  it("제목이 올바른 스타일을 가진다", () => {
+    render(<ProgressionRateByCourseSection />);
 
-    renderComponent();
+    const title = screen.getByRole("heading", { level: 2 });
+    expect(title).toHaveClass("font-bold", "text-lg", "mb-2");
+    expect(title).toHaveTextContent("강의별 수강생 평균 진도율");
+  });
 
-    await waitFor(() => {
-      expect(
-        screen.getByText("데이터를 불러오는 중 오류가 발생했습니다.")
-      ).toBeInTheDocument();
-    });
+  it("단위 설명이 올바른 스타일을 가진다", () => {
+    render(<ProgressionRateByCourseSection />);
+
+    const unitDescription = screen.getByText("단위: %");
+    expect(unitDescription).toHaveClass("text-xs", "text-gray-400", "mb-2");
   });
 });
