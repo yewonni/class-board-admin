@@ -26,10 +26,7 @@ export default function TopCoursesSection() {
         );
         const sorted = filtered.sort((a, b) => b.studentCount - a.studentCount);
         setLectures(sorted.slice(0, 5));
-      } catch (error) {
-        if (process.env.NODE_ENV === "development") {
-          console.log("인기 강의 데이터 불러오기 실패", error);
-        }
+      } catch {
         setError(true);
       }
     };
