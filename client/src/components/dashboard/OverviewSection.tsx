@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getStudents } from "@/api/students/students";
 import { getLectures } from "@/api/courses/courses";
 import { getNotifications } from "@/api/notifications/notifications";
@@ -12,69 +11,43 @@ export default function OverviewSection() {
   const [allCoursesCount, setAllCoursesCount] = useState(0);
   const [averageProgress, setAverageProgress] = useState(0);
   const [unreadNotiCount, setUnreadNotiCount] = useState(0);
+
   const [studentsError, setStudentsError] = useState(false);
   const [coursesError, setCoursesError] = useState(false);
   const [progressError, setProgressError] = useState(false);
   const [notiError, setNotiError] = useState(false);
+
   const isLoading = useLoadingStore((state) => state.isLoading);
 
-  const fetchStudentsCount = async () => {
-    try {
-      setStudentsError(false);
-      const response = await getStudents();
-      setAllStudentsCount(response.data.totalStudentsCount);
-    } catch (error) {
-      if (process.env.NODE_ENV === "development") {
-        console.log(error, "전체 수강생 수 불러오기 실패");
-      }
-      setStudentsError(true);
-    }
-  };
-
-  const fetchCoursesCount = async () => {
-    try {
-      setCoursesError(false);
-      const response = await getLectures();
-      setAllCoursesCount(response.data.totalLecturesCount);
-    } catch (error) {
-      if (process.env.NODE_ENV === "development") {
-        console.log(error, "강의 수 불러오기 실패");
-      }
-      setCoursesError(true);
-    }
-  };
-
-  const fetchAverageProgress = async () => {
-    try {
-      setProgressError(false);
-      const response = await getAverageProgress();
-      setAverageProgress(response.data.averageProgress);
-    } catch (error) {
-      if (process.env.NODE_ENV === "development") {
-        console.log(error, "진도율 불러오기 실패");
-      }
-      setProgressError(true);
-    }
-  };
-
-  const fetchUnreadNotiCount = async () => {
-    try {
-      setNotiError(false);
-      const response = await getNotifications(1, 1, undefined, true);
-      setUnreadNotiCount(response.data.pagination?.totalCount || 0);
-    } catch (error) {
-      if (process.env.NODE_ENV === "development") {
-        console.log(error, "미확인 알림 수 불러오기 실패");
-      }
-      setNotiError(true);
-    }
-  };
-
   useEffect(() => {
-    fetchStudentsCount();
-    fetchCoursesCount();
-    fetchAverageProgress();
-    fetchUnreadNotiCount();
+    const fetchAll = async () => {
+      try {
+        const [studentsRes, coursesRes, progressRes, notiRes] =
+          await Promise.all([
+            getStudents(),
+            getLectures(),
+            getAverageProgress(),
+            getNotifications(1, 1, undefined, true),
+          ]);
+
+        setAllStudentsCount(studentsRes.data.totalStudentsCount);
+        setAllCoursesCount(coursesRes.data.totalLecturesCount);
+        setAverageProgress(progressRes.data.averageProgress);
+        setUnreadNotiCount(notiRes.data.pagination?.totalCount || 0);
+
+        setStudentsError(false);
+        setCoursesError(false);
+        setProgressError(false);
+        setNotiError(false);
+      } catch {
+        setStudentsError(true);
+        setCoursesError(true);
+        setProgressError(true);
+        setNotiError(true);
+      }
+    };
+
+    fetchAll();
   }, []);
 
   return (
@@ -83,7 +56,7 @@ export default function OverviewSection() {
       <div className="flex justify-around gap-6">
         {/* 전체 수강생 */}
         <article
-          className="rounded-lg p-6 text-white flex-1"
+          className="rounded-lg p-6 text-white flex-1 min-h-[100px]"
           style={{
             backgroundImage:
               "url('/images/all-students.svg'), linear-gradient(90deg, #7A5ADD 0%, #B8B8FF 100%)",
@@ -98,13 +71,13 @@ export default function OverviewSection() {
               수강생 데이터를 불러오는 데 실패했습니다.
             </p>
           ) : (
-            <p>{allStudentsCount}명</p>
+            <p className="text-2xl font-bold">{allStudentsCount}명</p>
           )}
         </article>
 
         {/* 총 강의 수 */}
         <article
-          className="rounded-lg p-6 text-white flex-1"
+          className="rounded-lg p-6 text-white flex-1 min-h-[100px]"
           style={{
             backgroundImage:
               "url('/images/all-courses.svg'), linear-gradient(90deg, #5694B1 0%, #CBF3F0 100%)",
@@ -123,9 +96,9 @@ export default function OverviewSection() {
           )}
         </article>
 
-        {/* 평균 수강 진도율*/}
+        {/* 평균 수강 진도율 */}
         <article
-          className="rounded-lg p-6 text-white flex-1"
+          className="rounded-lg p-6 text-white flex-1 min-h-[100px]"
           style={{
             backgroundImage:
               "url('/images/today-attendance.svg'), linear-gradient(90deg, #E36B94 0%, #FDCFE8 100%)",
@@ -146,7 +119,7 @@ export default function OverviewSection() {
 
         {/* 미확인 알림 수 */}
         <article
-          className="rounded-lg p-6 text-white flex-1"
+          className="rounded-lg p-6 text-white flex-1 min-h-[100px]"
           style={{
             backgroundImage:
               "url('/images/unconfirmed-noti.svg'), linear-gradient(90deg, #EE6565 0%, #FFD6A5 100%)",
