@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { SIDEBAR_LABELS } from "@/constants/constants";
 import { usePathname } from "next/navigation";
+import Logo from "./Logo";
 
 export const SIDEBAR_MENUS = [
   {
@@ -37,13 +38,9 @@ export default function SideBar() {
 
   return (
     <aside className="bg-sidebarBg w-[220px] min-h-screen px-4 py-6">
-      <div className="flex justify-center mb-6 border-b border-b-[#686868] py-5">
+      <div className="flex justify-center items-center h-[48px] mb-6 border-b border-b-[#686868] py-5">
         <Link href={"/dashboard"}>
-          <img
-            src="/images/logo.svg"
-            alt="클래스보드 로고"
-            className="h-12 object-contain cursor-pointer"
-          />
+          <Logo />
         </Link>
       </div>
 
