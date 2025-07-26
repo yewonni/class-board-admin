@@ -1,20 +1,29 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { useAuthStore } from "@/store/useAuthStore";
 import SideBar from "@/components/SideBar";
 import Header from "@/components/Header";
 import { SIDEBAR_LABELS } from "@/constants/constants";
-import NotificationModal from "@/components/notifications/NotificationModal";
 import {
   getNotifications,
   markNotificationRead,
 } from "@/api/notifications/notifications";
-import Pagination from "@/components/Pagination";
 import { useLoadingStore } from "@/store/useLoadingStore";
 import { useNotificationStore } from "@/store/useNotificationStore";
+import { showToast } from "@/utils/toast";
 
 const categories = ["전체", "강의", "공지", "과제", "기타"];
+
+const NotificationModal = dynamic(
+  () => import("@/components/notifications/NotificationModal"),
+  { ssr: false }
+);
+
+const Pagination = dynamic(() => import("@/components/Pagination"), {
+  ssr: false,
+});
 
 interface Notification {
   id: number;
@@ -58,10 +67,7 @@ export default function NotificationsPage() {
         );
         setNotifications(response.data.data);
         setTotalCount(response.data.pagination?.totalCount ?? 0);
-      } catch (error) {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error, "알림 불러오기 실패");
-        }
+      } catch {
         setError(true);
       }
     };
@@ -82,8 +88,8 @@ export default function NotificationsPage() {
         await markNotificationRead(item.id);
         markAsRead(item.id);
         setSelectedNotification({ ...item, isNew: false });
-      } catch (error) {
-        console.error("읽음 상태 변경 실패", error);
+      } catch {
+        showToast("알림 확인에 실패했습니다. 다시 시도해주세요.");
       }
     }
   };
