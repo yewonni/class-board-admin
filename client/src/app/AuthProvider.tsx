@@ -25,7 +25,8 @@ export default function AuthProvider({
       try {
         const res = await axiosInstance.post("/auth/refresh");
         setAccessToken(res.data.accessToken);
-      } catch {
+      } catch (error) {
+        console.error("토큰 갱신 실패", error);
         router.replace("/login");
       } finally {
         setIsReady(true);
@@ -33,9 +34,11 @@ export default function AuthProvider({
     };
 
     refresh();
-  }, [pathname]);
+  }, [pathname, router, setAccessToken]);
 
-  if (!isReady) return null;
+  if (!isReady) {
+    return null;
+  }
 
   return <>{children}</>;
 }
