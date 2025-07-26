@@ -98,7 +98,7 @@ export default function Header({ children }: HeaderProps) {
             <img
               src="/images/noti-on.svg"
               alt="최근 알림 확인하기"
-              className="mr-4 cursor-pointer transition-transform duration-150 ease-in-out
+              className="w-7 h-8 mr-4 cursor-pointer transition-transform duration-150 ease-in-out
              hover:brightness-110 active:brightness-90
              hover:scale-105 active:scale-95 "
               onClick={handleNotificationToggle}
@@ -107,7 +107,7 @@ export default function Header({ children }: HeaderProps) {
             <img
               src="/images/chevron-down.svg"
               alt="로그아웃 메뉴 열기"
-              className="w-4 cursor-pointer"
+              className="w-4 h-3 cursor-pointer"
               onClick={handleLogoutMenuOpen}
             />
             {isNotificationOpen && (
