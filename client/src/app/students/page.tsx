@@ -2,13 +2,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
+import dynamic from "next/dynamic";
 import SideBar from "@/components/SideBar";
 import Header from "@/components/Header";
 import { SIDEBAR_LABELS } from "@/constants/constants";
 import { SearchBar } from "@/components/SearchBar";
 import StudentsTable from "@/components/students/StudentsTable";
 import SelectOption from "@/components/SelectOption";
-import { StudentInfoModal } from "@/components/students/StudentInfoModal";
 import { getStudents, getStudentById } from "@/api/students/students";
 import { Student } from "@/types/students/students";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -16,6 +16,14 @@ import Pagination from "@/components/Pagination";
 import { useLoadingStore } from "@/store/useLoadingStore";
 
 const studentOptions = ["전체", "활성화", "비활성화"];
+
+const StudentInfoModal = dynamic(
+  () =>
+    import("@/components/students/StudentInfoModal").then(
+      (mod) => mod.StudentInfoModal
+    ),
+  { ssr: false }
+);
 
 export default function StudentsPage() {
   const [isStudentModalOpen, setStudentModalOpen] = useState(false);
