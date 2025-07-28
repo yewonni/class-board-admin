@@ -8,7 +8,18 @@ const router = express.Router();
 // 알림 목록 조회 (카테고리 필터링 가능)
 router.get("/", verifyToken, async (req: CustomRequest, res: Response) => {
   try {
-    const category = req.query.category as Category | undefined;
+    const validCategories = Object.values(Category);
+    const categoryRaw = req.query.category as string | undefined;
+
+    let category: Category | undefined;
+    if (categoryRaw && validCategories.includes(categoryRaw as Category)) {
+      category = categoryRaw as Category;
+    } else if (categoryRaw) {
+      return res
+        .status(400)
+        .json({ message: "유효하지 않은 category 값입니다." });
+    }
+
     const isNew =
       req.query.isNew === "true"
         ? true
