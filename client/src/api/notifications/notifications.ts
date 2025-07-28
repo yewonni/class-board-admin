@@ -23,7 +23,7 @@ export const getNotifications = (
   category?: string,
   isNew?: boolean
 ) => {
-  return axiosInstance.get<NotificationResponse>("/notifications", {
+  return axiosInstance.get<NotificationResponse>("/api/notifications", {
     params: {
       page,
       limit,
@@ -34,5 +34,5 @@ export const getNotifications = (
 };
 
 export const markNotificationRead = (id: number) => {
-  return axiosInstance.patch(`/notifications/${id}/read`, { isNew: false });
+  return axiosInstance.patch(`/api/notifications/${id}/read`, { isNew: false });
 };

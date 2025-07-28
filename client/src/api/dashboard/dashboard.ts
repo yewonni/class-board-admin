@@ -1,7 +1,9 @@
 import axiosInstance from "../axiosInstance";
 
 export const getAverageProgress = () => {
-  return axiosInstance.get<{ averageProgress: number }>("/dashboard/progress");
+  return axiosInstance.get<{ averageProgress: number }>(
+    "/api/dashboard/progress"
+  );
 };
 
 export interface MonthlyStudentStat {
@@ -10,7 +12,9 @@ export interface MonthlyStudentStat {
 }
 
 export const getMonthlyStudentStats = () => {
-  return axiosInstance.get<MonthlyStudentStat[]>("/dashboard/students/monthly");
+  return axiosInstance.get<MonthlyStudentStat[]>(
+    "/api/dashboard/students/monthly"
+  );
 };
 
 export interface CourseProgress {
@@ -20,5 +24,5 @@ export interface CourseProgress {
 }
 
 export const getCourseAverageProgress = () => {
-  return axiosInstance.get<CourseProgress[]>("/dashboard/progress/course");
+  return axiosInstance.get<CourseProgress[]>("/api/dashboard/progress/course");
 };

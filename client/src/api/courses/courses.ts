@@ -23,7 +23,7 @@ export const getLectures = (
   status?: string,
   search?: string
 ) => {
-  return axiosInstance.get<LecturesResponse>("/courses", {
+  return axiosInstance.get<LecturesResponse>("api/courses", {
     params: {
       page,
       limit,
@@ -51,7 +51,7 @@ interface CoursesDetail {
 }
 
 export const getCourseById = (id: number) => {
-  return axiosInstance.get<CoursesDetail>(`/courses/${id}`);
+  return axiosInstance.get<CoursesDetail>(`/api/courses/${id}`);
 };
 
 interface CourseStatusRequest {
@@ -59,5 +59,5 @@ interface CourseStatusRequest {
   status: string;
 }
 export const editCourseStatus = ({ id, status }: CourseStatusRequest) => {
-  return axiosInstance.put(`/courses/${id}`, { status });
+  return axiosInstance.put(`/api/courses/${id}`, { status });
 };

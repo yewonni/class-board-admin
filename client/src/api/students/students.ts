@@ -55,11 +55,11 @@ export const getStudents = (
   if (isActive !== undefined) params.isActive = isActive;
   if (search) params.search = search.trim();
 
-  return axiosInstance.get<StudentsListResponse>("/students", { params });
+  return axiosInstance.get<StudentsListResponse>("/api/students", { params });
 };
 
 export const getStudentById = (id: number) => {
-  return axiosInstance.get<StudentDetail>(`/students/${id}`);
+  return axiosInstance.get<StudentDetail>(`/api/students/${id}`);
 };
 
 interface StudentStatusRequest {
@@ -67,5 +67,5 @@ interface StudentStatusRequest {
   isActive: boolean;
 }
 export const editStudentStatus = ({ id, isActive }: StudentStatusRequest) => {
-  return axiosInstance.put(`/students/${id}`, { isActive });
+  return axiosInstance.put(`/api/students/${id}`, { isActive });
 };
