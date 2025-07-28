@@ -26,9 +26,9 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/auth", authRouter);
-app.use("/students", studentsRouter);
-app.use("/courses", coursesRouter);
-app.use("/notifications", notificationsRouter);
-app.use("/dashboard", dashboardRouter);
+app.use("/api/students", studentsRouter);
+app.use("/api/courses", coursesRouter);
+app.use("/api/notifications", notificationsRouter);
+app.use("/api/dashboard", dashboardRouter);
 
 export default app;
