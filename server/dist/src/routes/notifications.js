@@ -74,3 +74,4 @@ router.patch("/:id/read", verifyToken_1.verifyToken, (req, res) => __awaiter(voi
     }
 }));
 exports.default = router;
+//# sourceMappingURL=notifications.js.map

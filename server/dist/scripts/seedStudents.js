@@ -44,3 +44,4 @@ function main() {
 main()
     .catch(console.error)
     .finally(() => prismaClient_1.default.$disconnect());
+//# sourceMappingURL=seedStudents.js.map

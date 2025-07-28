@@ -105,3 +105,4 @@ describe("강의 API", () => {
         expect(res.body.status).toBe("진행중");
     }));
 });
+//# sourceMappingURL=courses.test.js.map

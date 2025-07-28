@@ -30,6 +30,7 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!admin) {
             return res.status(401).json({ message: "존재하지 않는 계정입니다." });
         }
+        // await bcrypt.hash(plainPassword, 10);
         const isValid = yield bcrypt_1.default.compare(password, admin.password);
         if (!isValid) {
             return res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
@@ -87,3 +88,4 @@ router.post("/logout", (req, res) => {
     res.json({ message: "로그아웃 되었습니다." });
 });
 exports.default = router;
+//# sourceMappingURL=auth.js.map

@@ -82,3 +82,4 @@ router.get("/progress/course", verifyToken_1.verifyToken, (req, res) => __awaite
     }
 }));
 exports.default = router;
+//# sourceMappingURL=dashboard.js.map

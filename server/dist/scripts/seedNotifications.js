@@ -66,3 +66,4 @@ function seedNotifications() {
 seedNotifications()
     .catch(console.error)
     .finally(() => prismaClient_1.default.$disconnect());
+//# sourceMappingURL=seedNotifications.js.map

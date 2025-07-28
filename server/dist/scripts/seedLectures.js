@@ -70,3 +70,4 @@ function seedLectures() {
 seedLectures()
     .catch(console.error)
     .finally(() => prismaClient_1.default.$disconnect());
+//# sourceMappingURL=seedLectures.js.map

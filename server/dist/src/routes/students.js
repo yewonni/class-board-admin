@@ -122,3 +122,4 @@ router.put("/:id", verifyToken_1.verifyToken, (req, res) => __awaiter(void 0, vo
     }
 }));
 exports.default = router;
+//# sourceMappingURL=students.js.map

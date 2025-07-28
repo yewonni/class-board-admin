@@ -96,3 +96,4 @@ describe("알림 API", () => {
         expect(res.body.data.isNew).toBe(false);
     }));
 });
+//# sourceMappingURL=notifications.test.js.map

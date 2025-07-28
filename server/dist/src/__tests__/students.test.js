@@ -120,3 +120,4 @@ describe("수강생 API", () => {
         expect(res.status).toBe(400);
     }));
 });
+//# sourceMappingURL=students.test.js.map

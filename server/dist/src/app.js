@@ -24,8 +24,9 @@ app.get("/", (req, res) => {
     res.send("서버 연결 성공!");
 });
 app.use("/auth", auth_1.default);
-app.use("/students", students_1.default);
-app.use("/courses", courses_1.default);
-app.use("/notifications", notifications_1.default);
-app.use("/dashboard", dashboard_1.default);
+app.use("/api/students", students_1.default);
+app.use("/api/courses", courses_1.default);
+app.use("/api/notifications", notifications_1.default);
+app.use("/api/dashboard", dashboard_1.default);
 exports.default = app;
+//# sourceMappingURL=app.js.map

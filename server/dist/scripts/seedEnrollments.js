@@ -49,3 +49,4 @@ function seedEnrollments() {
 seedEnrollments()
     .catch(console.error)
     .finally(() => prismaClient_1.default.$disconnect());
+//# sourceMappingURL=seedEnrollments.js.map

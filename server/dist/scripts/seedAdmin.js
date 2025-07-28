@@ -43,3 +43,4 @@ function seedAdmin() {
 seedAdmin()
     .catch((err) => console.error("시드 중 오류 발생:", err))
     .finally(() => prismaClient_1.default.$disconnect());
+//# sourceMappingURL=seedAdmin.js.map
