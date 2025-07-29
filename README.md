@@ -158,5 +158,5 @@ project-root/
 
 ## 📑 API 문서
 
-자세한 API 명세서는 [API.md](./API.md) 에서 확인할 수 있습니다.
+자세한 API 문서는 [API명세서]([./API.md](https://github.com/yewonni/class-board-admin/wiki)) 에서 확인할 수 있습니다.
 
