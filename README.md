@@ -60,6 +60,73 @@ Class Board Admin은 가상의 교육 플랫폼을 위한 관리자 웹 애플�
 
   ![알림센터 화면 예시](./client/public/images/notifications.png)
 
+
+## 🗂️ 폴더구조
+<details>
+<summary> 구조 펼치기 </summary>
+  
+```
+project-root/
+├── client/
+│   ├── public/
+│   │   └── images/
+│   │       ├── login.png
+│   │       ├── dashboard.png
+│   │       └── ...
+│   └── src/
+│       ├── __tests__/
+│       │   ├── components/
+│       │   └── pages/
+│       ├── api/
+│       ├── app/
+│       ├── components/
+│       ├── constants/
+│       ├── hooks/
+│       ├── store/
+│       ├── styles/
+│       ├── types/
+│       ├── utils/
+│       ├── declarations.d.ts
+│       └── setupTests.ts
+
+├── server/
+│   ├── src/
+│   │   ├── __tests__/
+│   │   │   ├── auth.test.ts
+│   │   │   ├── courses.test.ts
+│   │   │   ├── dashboard.test.ts
+│   │   │   ├── notifications.test.ts
+│   │   │   └── students.test.ts
+│   │   ├── middleware/
+│   │   │   └── verifyToken.ts
+│   │   ├── routes/
+│   │   │   ├── auth.ts
+│   │   │   ├── courses.ts
+│   │   │   ├── dashboard.ts
+│   │   │   ├── notifications.ts
+│   │   │   └── students.ts
+│   │   ├── app.ts
+│   │   ├── index.ts
+│   │   └── prismaClient.ts
+│   ├── scripts/
+│   │   ├── seedAdmin.ts
+│   │   ├── seedEnrollments.ts
+│   │   ├── seedLectures.ts
+│   │   ├── seedNotifications.ts
+│   │   └── seedStudents.ts
+│   └── prisma/
+│       ├── schema.prisma
+│       ├── dev.db
+│       ├── migration_lock.toml
+│       └── migrations/
+│           ├── 20250630073133_init/
+│           ├── 20250702092943_add_notification/
+│           └── 20250702114353_add_cascade_to_enrollment/
+```
+</details>
+
+
+
 ## 🛠️ 기술 스택
 
 ### 프론트엔드
@@ -88,3 +155,8 @@ Class Board Admin은 가상의 교육 플랫폼을 위한 관리자 웹 애플�
 - **백엔드**: AWS EC2 (Ubuntu) + PM2 + Nginx
 - **도메인 관리**: AWS Route 53
 - **HTTPS 인증서**: Let's Encrypt (Certbot)
+
+## 📑 API 문서
+
+자세한 API 명세서는 [API.md](./API.md) 에서 확인할 수 있습니다.
+
